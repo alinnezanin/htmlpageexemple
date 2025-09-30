@@ -2,362 +2,300 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Playground de Testes - Campos, Ações e Seletores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Playwright Locators Playground</title>
   <style>
-    :root { --bg:#0f172a; --card:#111827; --muted:#94a3b8; --accent:#22c55e; --danger:#ef4444; --warn:#f59e0b; --text:#e5e7eb; --border:#1f2937; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:linear-gradient(180deg,#0b1022,#0f172a 30%); color:var(--text); }
-    header { position:sticky; top:0; backdrop-filter: blur(6px); background:rgba(2,6,23,.7); border-bottom:1px solid var(--border); }
-    nav { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:12px 16px; }
-    nav .brand { font-weight:700; letter-spacing:.3px; }
-    nav a { color:var(--text); text-decoration:none; margin:0 8px; padding:6px 10px; border-radius:10px; }
-    nav a:hover { background:#0b1220; }
-    .container { max-width:1200px; margin:16px auto; padding:0 16px 40px; display:grid; grid-template-columns: 1.2fr 2fr; gap:20px; }
-    .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
-    h2 { margin:0 0 12px; font-size:20px; }
-    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-    label { display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
-    input, select, textarea { width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:#0b1220; color:var(--text); }
-    textarea { resize:vertical; min-height:80px; }
-    .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    .btn { border:1px solid var(--border); background:#0b1220; color:var(--text); padding:9px 12px; border-radius:12px; cursor:pointer; }
-    .btn:hover { filter:brightness(1.1); }
-    .btn.primary { background:var(--accent); color:#062a16; border-color:#1a3d27; }
-    .btn.warn { background:var(--warn); color:#231d00; }
-    .btn.ghost { background:transparent; }
-    .pill { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:12px; border:1px solid var(--border); background:#0b1220; }
-    .muted { color:var(--muted); }
-    .badge { display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; padding:0 6px; border-radius:999px; background:var(--danger); color:#fff; font-size:12px; font-weight:700; }
-
-    /* Produtos */
-    .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
-    .cards { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; }
-    .product { border:1px dashed #1f2b3f; border-radius:14px; padding:12px; display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center; }
-    .product.promo { outline:2px solid var(--accent); background: #0e1b16; }
-    .product .title { font-weight:600; }
-    .product .price { color:#a7f3d0; }
-
-    /* Toast */
-    .toast { position:fixed; right:16px; bottom:16px; background:#0b1220; border:1px solid var(--border); padding:12px 14px; border-radius:12px; box-shadow: 0 10px 30px rgba(0,0,0,.35); display:none; }
-
-    /* Modal */
-    .backdrop { position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; align-items:center; justify-content:center; }
-    .modal { width:min(520px, 92vw); background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; }
-
-    /* Tabela (para Xpath/CSS por hierarquia) */
-    table { width:100%; border-collapse: collapse; font-size:14px; }
-    th, td { border:1px solid var(--border); padding:8px; text-align:left; }
-    th { background:#0b1220; color:#a3b0c3; }
-
-    /* Tooltip simples via title + CSS alvo para role=button */
-    [role="button"] { cursor:pointer; border:1px dashed #324058; padding:4px 8px; border-radius:8px; }
-
-    /* Seção colapsável para testes de estados visuais */
-    details { background:#0b1220; border:1px solid var(--border); padding:8px 12px; border-radius:12px; }
-    summary { cursor:pointer; }
+    :root{--bg:#0b1020;--card:#121938;--muted:#9aa3b2;--accent:#6ee7b7;--danger:#fecaca;--ok:#bbf7d0;--ink:#e6e9f2}
+    *{box-sizing:border-box}
+    body{margin:0;font:16px/1.5 system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b1020,#0b0f1a);color:var(--ink)}
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:16px 20px;background:#0d1430;position:sticky;top:0}
+    header a{color:#a5b4fc;text-decoration:none;font-weight:600}
+    .container{max-width:1000px;margin:24px auto;padding:0 16px}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid #1f2755;border-radius:14px;padding:14px;box-shadow:0 6px 20px #00000066}
+    .card h3{margin:0 0 8px}
+    .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
+    .btn{padding:8px 12px;border-radius:10px;border:1px solid #2b356e;background:#16204a;color:#fff;cursor:pointer}
+    .btn:hover{filter:brightness(1.1)}
+    .btn[aria-pressed="true"]{outline:2px solid var(--accent)}
+    .btn-danger{border-color:#7f1d1d;background:#451a1a}
+    .btn-ghost{background:transparent;border-color:#334155}
+    input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #2b356e;background:#0f1536;color:#fff}
+    label{display:block;margin:6px 0;color:var(--muted)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .list{display:grid;gap:10px;margin-top:8px}
+    .item{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:10px;border:1px dashed #27306e;border-radius:12px;padding:10px}
+    .item img{width:56px;height:56px;border-radius:10px;object-fit:cover;border:1px solid #2b356e}
+    .item .meta{display:flex;flex-direction:column}
+    .badge{display:inline-block;font-size:12px;border:1px solid #334155;border-radius:999px;padding:2px 8px;color:#9fb0ff}
+    .promo{outline:2px dashed #fbbf24}
+    .muted{color:var(--muted)}
+    .ok{background:linear-gradient(90deg,#063,#0a4);padding:10px;border-radius:12px}
+    .status{margin-top:12px;padding:10px;border-radius:12px;background:#0f1536;border:1px solid #24306d}
+    .hidden{display:none}
+    footer{margin:36px 0 24px;color:#7d89a6;text-align:center}
+    code{background:#0f1536;padding:2px 6px;border-radius:6px;border:1px solid #2b356e}
   </style>
 </head>
 <body>
   <header>
-    <nav>
-      <div class="brand">QA Playground</div>
-      <div class="row">
-        <a href="#home" data-qa="lnk-home">Home</a>
-        <a href="#promo" data-qa="lnk-promo">Promo</a>
-        <a href="#ajuda" title="Veja dicas e atalhos" rel="help">Ajuda</a>
-        <span class="pill" aria-label="Itens no carrinho">Carrinho <span class="badge" data-cart-count>0</span></span>
-      </div>
+    <nav aria-label="Menu principal">
+      <a class="nav-link" href="#catalogo" title="Ir ao catálogo">Catálogo</a>
+      <a class="nav-link" href="#sobre">Sobre</a>
     </nav>
+    <div class="toolbar">
+      <!-- role + aria-pressed para locator por role/state -->
+      <button class="btn" role="button" aria-pressed="false" id="toggleTheme" data-testid="btn-theme" title="Alternar tema">Alternar tema</button>
+      <!-- data-cy para locator por atributo custom -->
+      <button class="btn btn-ghost" data-cy="btn-reset" aria-label="Limpar filtros">Limpar filtros</button>
+    </div>
   </header>
 
-  <main class="container">
-    <!-- FORM CADASTRO -->
-    <section class="card" id="home">
-      <h2>Cadastro Rápido</h2>
-      <p class="muted">Alguns campos propositalmente <strong>não têm id</strong>. Use seletores por <em>label</em>, <code>name</code>, <code>placeholder</code>, <code>aria-*</code>, hierarquia e texto visível.</p>
+  <main id="catalogo" class="container">
+    <h1 data-testid="titulo">Playwright Locators Playground</h1>
+    <p class="muted">Página simples para treinar <strong>vários tipos de seletores</strong> no Playwright: por <em>texto</em>, <em>role ARIA</em>, <em>id</em>, <em>classe</em>, <em>name</em>, <em>placeholder</em>, <em>alt</em>, <em>data-*</em>, <em>atributo</em>, <em>hierarquia</em>, <em>nth-child</em> e outros.</p>
 
-      <form novalidate data-form-cadastro>
-        <div class="grid-2">
-          <div>
-            <label>Nome
-              <input type="text" name="nome" placeholder="Seu nome completo" aria-label="Nome completo" required />
-            </label>
-          </div>
-          <div>
-            <label>E-mail
-              <input type="email" name="email" placeholder="voce@exemplo.com" required />
-            </label>
-          </div>
-          <div>
-            <label>Senha
-              <input type="password" name="senha" minlength="6" placeholder="Mín. 6 caracteres" />
-            </label>
-          </div>
-          <div>
-            <label style="color:#f87171">Confirmação de senha
-              <input type="password" name="confirmacao" placeholder="Repita a senha" />
-            </label>
-          </div>
-          <div>
-            <label>Telefone
-              <input type="tel" name="telefone" pattern="\(\d{2}\) \d{4,5}-\d{4}" placeholder="(51) 99999-9999" />
-            </label>
-          </div>
-          <div>
-            <label>URL do site
-              <input type="url" name="site" placeholder="https://" />
-            </label>
-          </div>
-          <div>
-            <label>Data de Nascimento
-              <input type="date" name="data" />
-            </label>
-          </div>
-          <div>
-            <label>Horário preferido
-              <input type="time" name="hora" />
-            </label>
-          </div>
-          <div>
-            <label>Cor favorita
-              <input type="color" name="cor" />
-            </label>
-          </div>
-          <div>
-            <label>Intensidade (range)
-              <input type="range" name="intensidade" min="0" max="100" value="50" />
-            </label>
-          </div>
-          <div>
-            <label>Upload de arquivo
-              <input type="file" name="arquivo" />
-            </label>
-          </div>
-          <div>
-            <label>Comentários
-              <textarea name="comentarios" maxlength="120" placeholder="Fale sobre você"></textarea>
-              <small class="muted" data-count>0/120</small>
-            </label>
-          </div>
-        </div>
-
-        <div class="row" style="margin-top:8px">
-          <fieldset style="border:1px dashed #30405a; border-radius:10px; padding:10px">
-            <legend>Plano</legend>
-            <label class="row"><input type="radio" name="plano" value="basico" /> Básico</label>
-            <label class="row"><input type="radio" name="plano" value="pro" /> Pro</label>
-          </fieldset>
-          <fieldset style="border:1px dashed #30405a; border-radius:10px; padding:10px">
-            <legend>Preferências</legend>
-            <label class="row"><input type="checkbox" name="newsletter" /> Quero receber novidades</label>
-            <label class="row"><input type="checkbox" name="ofertas" /> Enviar ofertas por e-mail</label>
-          </fieldset>
-        </div>
-
-        <div class="row" style="margin-top:12px">
-          <button class="btn primary" type="submit" title="Enviar dados do cadastro">Cadastrar</button>
-          <button class="btn ghost" type="reset">Limpar</button>
-          <span role="button" data-role-btn title="Esse é um botão com role=button">Botão acessível</span>
-        </div>
-      </form>
-
-      <details style="margin-top:12px">
-        <summary>Ver termos (colapsável)</summary>
-        <p class="muted">Ao se cadastrar você aceita os termos da plataforma. Campo sem id para treinar seletores por hierarquia.</p>
-      </details>
-    </section>
-
-    <!-- LOJA E AÇÕES -->
-    <section class="card" id="loja">
-      <h2>Loja de Itens (Promo / Filtros / Busca / Inclusão)</h2>
+    <!-- FILTROS -->
+    <section class="card" aria-labelledby="filtrosTitulo">
+      <h3 id="filtrosTitulo">Filtros</h3>
+      <div class="row">
+        <!-- locator por placeholder / por label encadeado -->
+        <label>Título contém
+          <input type="search" name="busca" placeholder="Busque pelo nome" />
+        </label>
+        <!-- locator por select e por id -->
+        <label for="categoria">Categoria</label>
+        <select id="categoria" name="categoria">
+          <option value="">Todas</option>
+          <option value="organico">Orgânico</option>
+          <option value="convencional">Convencional</option>
+        </select>
+      </div>
       <div class="toolbar">
-        <input type="search" placeholder="Buscar por nome" aria-label="Buscar produtos" data-search />
-        <button class="btn" data-action="buscar">Buscar</button>
-        <label class="row" title="Mostrar só orgânicos"><input type="checkbox" data-filter-org /> Orgânicos</label>
-        <label class="row"><input type="checkbox" data-filter-ind /> Industrializados</label>
-        <input type="number" placeholder="Preço mín" min="0" data-min />
-        <input type="number" placeholder="Preço máx" min="0" data-max />
-        <button class="btn" data-action="aplicar">Aplicar filtros</button>
-        <button class="btn ghost" data-action="limpar">Limpar</button>
-        <button class="btn warn" data-open-modal>Incluir item</button>
-        <a href="#promo" data-qa="ver-promocoes">Ver promoções</a>
+        <!-- locator por texto exato/contém texto -->
+        <button class="btn" data-testid="aplicar-filtros">Aplicar filtros</button>
+        <button class="btn btn-danger" data-action="mostrar-alerta" aria-controls="alerta">Mostrar alerta</button>
       </div>
-
-      <div class="cards" data-lista-produtos>
-        <!-- Produtos gerados por JS -->
-      </div>
-
-      <h3 style="margin-top:16px">Tabela para seletores por hierarquia</h3>
-      <table data-tabela>
-        <thead>
-          <tr><th>SKU</th><th>Nome</th><th>Categoria</th><th>Preço</th></tr>
-        </thead>
-        <tbody><!-- linhas via JS --></tbody>
-      </table>
+      <div id="alerta" class="status hidden" role="status" aria-live="polite"></div>
     </section>
+
+    <!-- CATÁLOGO -->
+    <section class="card" aria-labelledby="catalogoTitulo">
+      <h3 id="catalogoTitulo">Catálogo</h3>
+      <ul class="list" id="listaProdutos">
+        <!-- Cada item varia atributos para praticar locators -->
+        <li class="item" data-sku="A100" data-category="organico">
+          <img alt="maçã vermelha" src="https://picsum.photos/seed/maca/100/100" />
+          <div class="meta">
+            <strong class="nome">Maçã Gala</strong>
+            <span class="badge">Orgânico</span>
+            <small class="muted" title="Preço atual">R$ <span class="preco">5,99</span></small>
+            <a href="#detalhes" class="detalhes">Ver detalhes</a>
+          </div>
+          <div>
+            <!-- por classe, por atributo data-action, por role=button -->
+            <button class="btn btn-ghost btn-promo" data-action="toggle-promo" aria-label="Marcar como promoção">Promo</button>
+          </div>
+        </li>
+        <li class="item" data-sku="B200" data-category="convencional">
+          <img alt="banana madura" src="https://picsum.photos/seed/banana/100/100" />
+          <div class="meta">
+            <strong class="nome">Banana Prata</strong>
+            <span class="badge">Convencional</span>
+            <small class="muted">R$ <span class="preco">3,49</span></small>
+            <a href="#detalhes" class="detalhes">Mais infos</a>
+          </div>
+          <div>
+            <button class="btn btn-ghost btn-promo" data-action="toggle-promo">Promo</button>
+          </div>
+        </li>
+        <li class="item" data-sku="C300" data-category="organico">
+          <img alt="laranja" src="https://picsum.photos/seed/laranja/100/100" />
+          <div class="meta">
+            <strong class="nome" data-testid="terceiro-item">Laranja Bahia</strong>
+            <span class="badge">Orgânico</span>
+            <small class="muted">R$ <span class="preco">4,79</span></small>
+            <a href="#detalhes" class="detalhes" title="Abrir detalhes">Abrir</a>
+          </div>
+          <div>
+            <button class="btn btn-ghost btn-promo" data-action="toggle-promo">Promo</button>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Form sem ids em todos os campos para praticar name/placeholder/label/atributos -->
+      <form class="card" id="formNovo" data-testid="form-novo" aria-labelledby="novoTitulo">
+        <h3 id="novoTitulo">Incluir item</h3>
+        <div class="row">
+          <label>Nome
+            <input name="nome" placeholder="Ex.: Kiwi" />
+          </label>
+          <label>Preço (R$)
+            <input type="number" min="0" step="0.01" data-qa="preco" placeholder="0,00" />
+          </label>
+        </div>
+        <div class="row">
+          <label for="selCategoria">Categoria</label>
+          <select id="selCategoria" aria-label="Categoria do item">
+            <option value="organico">Orgânico</option>
+            <option value="convencional">Convencional</option>
+          </select>
+          <label>
+            <input type="checkbox" aria-label="Marcar como promoção ao incluir" data-role="promo" />
+            Já entra em promoção
+          </label>
+        </div>
+        <div class="toolbar">
+          <!-- por name e por texto -->
+          <button class="btn" name="salvar">Incluir item</button>
+          <button type="button" class="btn btn-ghost" data-testid="btn-exemplo-css">Exemplo CSS (pinta 3º)</button>
+        </div>
+        <div id="msg" class="status" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="card" aria-labelledby="sobreTitulo">
+      <h3 id="sobreTitulo">Sobre</h3>
+      <p>Use esta página para treinar:</p>
+      <ul>
+        <li>locator.getByText('Aplicar filtros')</li>
+        <li>locator.getByRole('button', { name: 'Promo' })</li>
+        <li>locator.getByPlaceholder('Busque pelo nome')</li>
+        <li>locator.getByLabel('Categoria')</li>
+        <li>locator.getByAltText('maçã vermelha')</li>
+        <li>locator.locator('[data-sku="C300"]')</li>
+        <li>locator.locator('.item:nth-child(3) .nome')</li>
+        <li>locator.getByTestId('form-novo')</li>
+        <li>locator.locator('[data-qa="preco"]')</li>
+      </ul>
+    </section>
+
+    <div class="ok hidden" id="toast" role="alert">Ação realizada com sucesso!</div>
   </main>
 
-  <!-- Modal Incluir Item -->
-  <div class="backdrop" data-backdrop>
-    <div class="modal">
-      <h3>Novo item</h3>
-      <div class="grid-2">
-        <label>Nome <input type="text" data-new-nome placeholder="Ex.: Maçã Pink" /></label>
-        <label>Preço <input type="number" data-new-preco placeholder="9.90" min="0" step="0.01" /></label>
-        <label>Categoria
-          <select data-new-cat>
-            <option value="organico">Orgânico</option>
-            <option value="industrial">Industrializado</option>
-          </select>
-        </label>
-        <label>SKU <input type="text" data-new-sku placeholder="ORG-0010" /></label>
-      </div>
-      <div class="row" style="margin-top:12px">
-        <button class="btn primary" data-save-item>Salvar</button>
-        <button class="btn" data-close-modal>Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div class="toast" data-toast></div>
+  <footer>
+    <small>Feito para treinar locators do Playwright. Dica: abra o DevTools e brinque com <code>$$(selector)</code>.</small>
+  </footer>
 
   <script>
-    // UTILIDADES
-    const $ = (sel, ctx=document) => ctx.querySelector(sel);
-    const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
-    const toast = (msg, type="info") => {
-      const el = $('[data-toast]');
-      el.textContent = msg;
-      el.style.display = 'block';
-      el.style.borderColor = type==='error' ? '#3a1f28' : (type==='success' ? '#1f3a2a' : '#1f2937');
-      setTimeout(()=> el.style.display='none', 1800);
-    };
+    const qs = (s, el=document) => el.querySelector(s);
+    const qsa = (s, el=document) => Array.from(el.querySelectorAll(s));
 
-    // CONTEXTO
-    const produtos = [
-      { sku:'ORG-0001', nome:'Maçã Orgânica', cat:'organico', preco: 7.90, promo:false },
-      { sku:'IND-0002', nome:'Biscoito Recheado', cat:'industrial', preco: 5.49, promo:false },
-      { sku:'ORG-0003', nome:'Cenoura', cat:'organico', preco: 4.20, promo:true },
-      { sku:'IND-0004', nome:'Refrigerante Lata', cat:'industrial', preco: 6.99, promo:false },
-      { sku:'ORG-0005', nome:'Alface Crespa', cat:'organico', preco: 3.50, promo:false },
-    ];
+    // Alternar tema claro/escuro apenas para demonstrar getByRole + state
+    const themeBtn = qs('#toggleTheme');
+    themeBtn.addEventListener('click', () => {
+      const pressed = themeBtn.getAttribute('aria-pressed') === 'true';
+      themeBtn.setAttribute('aria-pressed', String(!pressed));
+      document.body.style.filter = pressed ? 'none' : 'hue-rotate(20deg)';
+    });
 
-    const state = { query:'', org:false, ind:false, min:null, max:null, somentePromo:false, carrinho:0 };
+    // Limpar filtros
+    qs('[data-cy="btn-reset"]').addEventListener('click', () => {
+      const busca = qs('input[placeholder="Busque pelo nome"]');
+      const cat = qs('#categoria');
+      if (busca) busca.value = '';
+      if (cat) cat.value = '';
+      filtrar();
+      flash('Filtros limpos.');
+    });
 
-    // RENDERIZAÇÃO
-    function renderProdutos() {
-      const lista = $('[data-lista-produtos]');
-      lista.innerHTML = '';
+    // Aplicar filtros
+    qs('[data-testid="aplicar-filtros"]').addEventListener('click', () => filtrar());
 
-      let data = produtos.filter(p => {
-        if (state.somentePromo && !p.promo) return false;
-        if (state.query && !p.nome.toLowerCase().includes(state.query.toLowerCase())) return false;
-        if (state.org && p.cat !== 'organico') return false;
-        if (state.ind && p.cat !== 'industrial') return false;
-        if (state.min != null && p.preco < state.min) return false;
-        if (state.max != null && p.preco > state.max) return false;
-        return true;
-      });
-
-      data.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'product' + (p.promo ? ' promo' : '');
-        card.setAttribute('data-sku', p.sku);
-        card.setAttribute('data-category', p.cat);
-
-        const left = document.createElement('div');
-        left.innerHTML = `<div class="title">${p.nome}</div>
-                          <div class="muted">Categoria: <span>${p.cat}</span></div>
-                          <div class="price">R$ ${p.preco.toFixed(2)}</div>
-                          <a href="#detalhes" class="muted">Ver detalhes</a>`;
-
-        const right = document.createElement('div');
-        right.style.display = 'grid';
-        right.style.gap = '8px';
-        
-        const btnPromo = document.createElement('button');
-        btnPromo.className = 'btn';
-        btnPromo.setAttribute('aria-label','alternar promocao');
-        btnPromo.textContent = p.promo ? 'Remover da Promo' : 'Adicionar à Promo';
-        btnPromo.addEventListener('click', () => {
-          p.promo = !p.promo; renderProdutos(); toast(p.promo ? 'Item entrou na Promo' : 'Item removido da Promo', 'success');
-        });
-
-        const btnCarrinho = document.createElement('button');
-        btnCarrinho.className = 'btn primary';
-        btnCarrinho.title = 'Adicionar ao carrinho';
-        btnCarrinho.textContent = 'Adicionar ao carrinho';
-        btnCarrinho.addEventListener('click', () => {
-          state.carrinho++; $('[data-cart-count]').textContent = state.carrinho; toast('Adicionado no carrinho', 'success');
-        });
-
-        const spanFakeButton = document.createElement('span');
-        spanFakeButton.setAttribute('role','button');
-        spanFakeButton.textContent = 'Ação extra';
-        spanFakeButton.addEventListener('click', () => toast('Clique no role=button'));
-
-        right.append(btnPromo, btnCarrinho, spanFakeButton);
-        card.append(left, right);
-        lista.append(card);
-      });
-
-      renderTabela(data);
-    }
-
-    function renderTabela(data) {
-      const tbody = $('[data-tabela] tbody');
-      tbody.innerHTML='';
-      data.forEach(p => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${p.sku}</td><td>${p.nome}</td><td>${p.cat}</td><td>R$ ${p.preco.toFixed(2)}</td>`;
-        tbody.append(tr);
+    function filtrar(){
+      const termo = (qs('input[placeholder="Busque pelo nome"]').value || '').toLowerCase();
+      const categoria = qs('#categoria').value;
+      qsa('#listaProdutos .item').forEach(li => {
+        const nome = qs('.nome', li).textContent.toLowerCase();
+        const cat = li.getAttribute('data-category');
+        const matchNome = !termo || nome.includes(termo);
+        const matchCat = !categoria || cat === categoria;
+        li.style.display = (matchNome && matchCat) ? '' : 'none';
       });
     }
 
-    // FILTROS / BUSCA
-    $('[data-action="buscar"]').addEventListener('click', ()=>{ state.query = $('[data-search]').value.trim(); renderProdutos(); });
-    $('[data-action="aplicar"]').addEventListener('click', ()=>{
-      state.org = $('[data-filter-org]').checked;
-      state.ind = $('[data-filter-ind]').checked;
-      const vmin = $('[data-min]').value; const vmax = $('[data-max]').value;
-      state.min = vmin==='' ? null : Number(vmin);
-      state.max = vmax==='' ? null : Number(vmax);
-      renderProdutos();
-    });
-    $('[data-action="limpar"]').addEventListener('click', ()=>{
-      $('[data-search]').value=''; $('[data-filter-org]').checked=false; $('[data-filter-ind]').checked=false; $('[data-min]').value=''; $('[data-max]').value='';
-      state.query=''; state.org=false; state.ind=false; state.min=null; state.max=null; state.somentePromo=false; renderProdutos();
+    // Mostrar alerta (por texto/aria-controls)
+    qsa('[data-action="mostrar-alerta"]').forEach(btn => btn.addEventListener('click', () => {
+      const box = qs('#alerta');
+      box.textContent = 'Atenção: isto é apenas um alerta de exemplo!';
+      box.classList.remove('hidden');
+      setTimeout(()=> box.classList.add('hidden'), 2000);
+    }));
+
+    // Marcar/Desmarcar Promo (por data-action e classe)
+    qsa('[data-action="toggle-promo"]').forEach(btn => btn.addEventListener('click', (e) => {
+      const li = e.currentTarget.closest('.item');
+      li.classList.toggle('promo');
+      flash(li.classList.contains('promo') ? 'Item marcado como PROMO.' : 'Item removido da PROMO.');
+    }));
+
+    // Incluir item (por name="salvar")
+    qs('button[name="salvar"]').addEventListener('click', (e) => {
+      e.preventDefault();
+      const form = qs('[data-testid="form-novo"]');
+      const nome = qs('input[name="nome"]', form).value.trim();
+      const preco = qs('[data-qa="preco"]', form).value.trim();
+      const categoria = qs('#selCategoria', form).value;
+      const entraPromo = qs('input[type="checkbox"][data-role="promo"]', form).checked;
+      if(!nome || !preco){
+        msg('Preencha nome e preço.');
+        return;
+      }
+      const sku = gerarSKU();
+      const li = document.createElement('li');
+      li.className = 'item' + (entraPromo ? ' promo' : '');
+      li.setAttribute('data-sku', sku);
+      li.setAttribute('data-category', categoria);
+      li.innerHTML = `
+        <img alt="${nome}" src="https://picsum.photos/seed/${encodeURIComponent(nome)}/100/100" />
+        <div class="meta">
+          <strong class="nome">${nome}</strong>
+          <span class="badge">${categoria === 'organico' ? 'Orgânico' : 'Convencional'}</span>
+          <small class="muted">R$ <span class="preco">${Number(preco).toFixed(2)}</span></small>
+          <a href="#detalhes" class="detalhes">Detalhes</a>
+        </div>
+        <div>
+          <button class="btn btn-ghost btn-promo" data-action="toggle-promo">Promo</button>
+        </div>`;
+      qs('#listaProdutos').appendChild(li);
+      // rebind do botão Promo do novo item
+      qs('.btn-promo', li).addEventListener('click', (ev)=>{
+        const item = ev.currentTarget.closest('.item');
+        item.classList.toggle('promo');
+        flash(item.classList.contains('promo') ? 'Item marcado como PROMO.' : 'Item removido da PROMO.');
+      });
+      msg(`Item "${nome}" adicionado (SKU ${sku}).`);
+      flash('Item incluído.');
+      form.reset();
     });
 
-    // Link Promo do topo apenas filtra promo
-    $('[data-qa="lnk-promo"]').addEventListener('click', (e)=>{ e.preventDefault(); state.somentePromo = true; renderProdutos(); toast('Mostrando apenas Promoções'); });
-    $('[data-qa="ver-promocoes"]').addEventListener('click', (e)=>{ e.preventDefault(); state.somentePromo = true; renderProdutos(); });
-
-    // FORM CADASTRO
-    const form = $('[data-form-cadastro]');
-    form.addEventListener('input', (e)=>{
-      if (e.target.name === 'comentarios') {
-        const len = e.target.value.length;
-        $('[data-count]').textContent = `${len}/120`;
+    // Botão exemplo CSS: estiliza o 3º item com nth-child
+    qs('[data-testid="btn-exemplo-css"]').addEventListener('click',()=>{
+      const terceiro = qs('.list .item:nth-child(3)');
+      if(terceiro){
+        terceiro.style.boxShadow = '0 0 0 3px #22c55e';
+        flash('3º item destacado com :nth-child(3).');
       }
     });
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const fd = new FormData(form);
-      const senha = fd.get('senha');
-      const conf = fd.get('confirmacao');
-      if (senha && conf && senha !== conf) { toast('Senhas não conferem', 'error'); return; }
-      if (!fd.get('nome') || !fd.get('email')) { toast('Preencha nome e e-mail', 'error'); return; }
-      toast('Cadastro realizado com sucesso!', 'success');
-      form.reset(); $('[data-count]').textContent = '0/120';
-    });
 
-    // MODAL INCLUIR ITEM
-    const openModal = () => { $('[data-backdrop]').style.display='flex'; };
-    const closeModal = () => { $('[data-backdrop]').style.display='none'; };
-    $('[data-open-modal]').addEventListener('click', openModal);
-    $('[data-close-modal]').addEventListener('click', closeModal);
-    $('[data-backdrop]').addEventListener('click', (e)=>{ if (e.target.m
+    function gerarSKU(){
+      const n = Math.floor(Math.random()*900 + 100); // 100..999
+      const letra = String.fromCharCode(65 + Math.floor(Math.random()*26));
+      return letra + n;
+    }
+
+    function msg(text){
+      const box = qs('#msg');
+      box.textContent = text;
+    }
+
+    function flash(text){
+      const t = qs('#toast');
+      t.textContent = text;
+      t.classList.remove('hidden');
+      setTimeout(()=> t.classList.add('hidden'), 1400);
+    }
+  </script>
+</body>
+</html>
